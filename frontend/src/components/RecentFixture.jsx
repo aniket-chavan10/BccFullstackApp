@@ -7,7 +7,7 @@ const RecentFixture = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = "https://bccfullstackapp-1.onrender.com";
 
   useEffect(() => {
     const getFixtures = async () => {

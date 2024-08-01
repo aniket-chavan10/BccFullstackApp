@@ -51,7 +51,7 @@ const Gallery = () => {
             <div key={index} className="shadow-md overflow-hidden">
               <div className="w-full h-64 bg-black">
                 <img
-                  src={`http://localhost:4000/${item.thumbnailImageUrl}`}
+                  src={`https://bccfullstackapp-1.onrender.com/${item.thumbnailImageUrl}`}
                   alt={item.caption}
                   className="w-full h-64 object-cover hover:scale-110 transition duration-1000 ease-in-out"
                 />

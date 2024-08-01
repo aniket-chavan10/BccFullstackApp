@@ -59,7 +59,7 @@ const Navbar = () => {
   const socialLinks = clubInfo.socialLinks ? JSON.parse(clubInfo.socialLinks) : {};
 
   // Log the logo URL to debug
-  const logoUrl = clubInfo.logo ? `http://localhost:4000${clubInfo.logo}` : "";
+  const logoUrl = clubInfo.logo ? `https://bccfullstackapp-1.onrender.com${clubInfo.logo}` : "";
   console.log("Logo URL:", logoUrl);
 
   return (

@@ -65,7 +65,7 @@ const LatestNews = () => {
           {/* Large news item */}
           <div className="md:col-span-2 shadow-md overflow-hidden">
             <ImageWithLoader
-              src={`http://localhost:4000/${newsData[0].imageUrl}`}
+              src={`https://bccfullstackapp-1.onrender.com/${newsData[0].imageUrl}`}
               alt={newsData[0].title}
             />
             <div className="py-2 relative">
@@ -90,7 +90,7 @@ const LatestNews = () => {
               className="shadow-md overflow-hidden md:col-span-1 col-span-full flex flex-col"
             >
               <ImageWithLoader
-                src={`http://localhost:4000/${newsItem.imageUrl}`}
+                src={`https://bccfullstackapp-1.onrender.com/${newsItem.imageUrl}`}
                 alt={newsItem.title}
               />
               <div className="py-2 pr-10 relative flex flex-col">

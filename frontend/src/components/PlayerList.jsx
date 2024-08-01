@@ -63,7 +63,7 @@ const PlayersList = () => {
             </button>
             <div className="w-4/5">
               <img
-                src={`http://localhost:4000/${player.image}`}
+                src={`https://bccfullstackapp-1.onrender.com/${player.image}`}
                 alt={player.name}
                 className="w-fit h-full object-cover rounded-l-lg"
               />

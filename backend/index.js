@@ -7,22 +7,24 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/BccDB";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+console.log("Connecting to MongoDB with URI:", MONGODB_URI);
+
 mongoose
   .connect(MONGODB_URI, {
-    useNewUrlParser: true,
+    useUnifiedTopology: true, // Add this option
   })
-  .then((response) => {
+  .then(() => {
     console.log("Database connection established");
   })
   .catch((error) => {
-    console.log("Error connecting to Mongo", error);
+    console.error("Error connecting to Mongo", error);
   });
 
 const infoRoutes = require("./routes/info");

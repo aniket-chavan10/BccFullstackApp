@@ -55,7 +55,7 @@ const Carousel = () => {
               <div className="relative pb-[56.25%] overflow-hidden">
                 {item.imageUrl ? (
                   <img
-                    src={`http://localhost:4000/${item.imageUrl}`}
+                    src={`https://bccfullstackapp-1.onrender.com/${item.imageUrl}`}
                     alt={`Slide ${index}`}
                     className="absolute inset-0 w-full h-full object-cover"
                   />

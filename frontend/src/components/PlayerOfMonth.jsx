@@ -67,7 +67,7 @@ function PlayerOfMonth() {
             <div className="flex flex-col md:flex-row h-full items-baseline">
               <div className="w-full md:w-1/3 relative" style={{ aspectRatio: '3 / 4' }}>
                 <img
-                  src={`http://localhost:4000/${bestBatsman.image}`}
+                  src={`https://bccfullstackapp-1.onrender.com/${bestBatsman.image}`}
                   alt={bestBatsman.name}
                   className="object-contain w-full h-full absolute inset-0"
                 />
@@ -109,7 +109,7 @@ function PlayerOfMonth() {
             <div className="flex flex-col md:flex-row h-full items-baseline">
               <div className="w-full md:w-1/3 relative" style={{ aspectRatio: '3 / 4' }}>
                 <img
-                  src={`http://localhost:4000/${bestBowler.image}`}
+                  src={`https://bccfullstackapp-1.onrender.com/${bestBowler.image}`}
                   alt={bestBowler.name}
                   className="object-contain w-full h-full absolute inset-0"
                 />

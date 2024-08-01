@@ -41,7 +41,7 @@ const GalleryDetail = () => {
           <div className="w-full grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="relative w-full h-0 pb-[56.25%]">
               <img
-                src={`http://localhost:4000/${galleryItem.thumbnailImageUrl}`}
+                src={`https://bccfullstackapp-1.onrender.com/${galleryItem.thumbnailImageUrl}`}
                 alt={galleryItem.caption}
                 className="absolute inset-0 w-full h-full object-cover"
               />
@@ -49,7 +49,7 @@ const GalleryDetail = () => {
             {galleryItem.additionalImageUrls.map((url, index) => (
               <div key={index} className="relative w-full h-0 pb-[56.25%]">
                 <img
-                  src={`http://localhost:4000/${url}`}
+                  src={`https://bccfullstackapp-1.onrender.com/${url}`}
                   alt={`Additional image ${index + 1}`}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -64,7 +64,7 @@ const GalleryDetail = () => {
           <div className="w-full mb-10">
             <div className="relative w-full h-0 pb-[56.25%]">
               <img
-                src={`http://localhost:4000/${galleryItem.thumbnailImageUrl}`}
+                src={`https://bccfullstackapp-1.onrender.com/${galleryItem.thumbnailImageUrl}`}
                 alt={galleryItem.caption}
                 className="absolute inset-0 w-full h-auto object-cover "
               />
@@ -75,7 +75,7 @@ const GalleryDetail = () => {
             {galleryItem.additionalImageUrls.map((url, index) => (
               <div key={index} className="relative w-full h-full pb-[56.25%]">
                 <img
-                  src={`http://localhost:4000/${url}`}
+                  src={`https://bccfullstackapp-1.onrender.com/${url}`}
                   alt={`Additional image ${index + 1}`}
                   className="absolute inset-0 w-full h-full object-cover"
                 />

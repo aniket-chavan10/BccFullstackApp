@@ -53,7 +53,7 @@ const AllGallery = () => {
               className="break-inside-avoid shadow-md overflow-hidden mb-4"
             >
               <img
-                src={`http://localhost:4000/${item.thumbnailImageUrl}`}
+                src={`https://bccfullstackapp-1.onrender.com/${item.thumbnailImageUrl}`}
                 alt={item.caption}
                 className="w-full hover:scale-110 transition duration-1000 ease-in-out"
               />
