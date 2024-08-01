@@ -62,7 +62,7 @@ function Players() {
             <div className="bg-gradient-to-b from-slate-50 to-slate-200 mb-5 flex flex-col items-center justify-center">
               <div className="relative h-72 w-full md:w-64 overflow-hidden flex justify-center items-center">
                 <img
-                  src={`https://bccfullstackapp-1.onrender.com/${player.image}`}
+                  src={`https://bcc-82hu.onrender.com/${player.image}`}
                   alt={player.name}
                   className="object-contain max-h-full max-w-full"
                 />

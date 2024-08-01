@@ -51,7 +51,7 @@ const PlayerEditForm = ({ player, onSave, onCancel }) => {
         <div className="flex">
           <div className="w-2/3">
             <img
-              src={`https://bccfullstackapp-1.onrender.com/${player.image}`}
+              src={`https://bcc-82hu.onrender.com/${player.image}`}
               alt={player.name}
               className="w-full h-full object-cover rounded-l-lg"
             />

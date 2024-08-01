@@ -83,7 +83,7 @@ const UpdateInformationForm = () => {
   }
 
   const getImageUrl = (path) => {
-    return path ? `https://bccfullstackapp-1.onrender.com/${path.replace(/^\//, "")}` : "";
+    return path ? `https://bcc-82hu.onrender.com/${path.replace(/^\//, "")}` : "";
   };
 
   return (

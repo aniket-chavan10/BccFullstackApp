@@ -46,7 +46,7 @@ const NewsDetails = () => {
           <div className="relative w-full mb-6">
             <div className="relative w-full h-0 pb-[56.25%]">
               <img
-                src={`https://bccfullstackapp-1.onrender.com/${newsItem.imageUrl}`}
+                src={`https://bcc-82hu.onrender.com/${newsItem.imageUrl}`}
                 alt={newsItem.title}
                 className="absolute inset-0 w-full h-full object-cover"
               />

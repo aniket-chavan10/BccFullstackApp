@@ -55,7 +55,7 @@ const About = () => {
       <div className="mb-8">
         <div className="relative">
           <ImageWithLoader
-            src={`https://bccfullstackapp-1.onrender.com${info.teamImg}`} // Ensure correct URL
+            src={`https://bcc-82hu.onrender.com${info.teamImg}`} // Ensure correct URL
             alt="Bhairavnath Cricket Club"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-50 rounded-lg"></div>

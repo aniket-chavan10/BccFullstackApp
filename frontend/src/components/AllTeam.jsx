@@ -44,7 +44,7 @@ function AllTeam() {
       style={{ backgroundImage: `url(${playerBg})` }}
     >
       <img
-        src={`https://bccfullstackapp-1.onrender.com/${player.image}`}
+        src={`https://bcc-82hu.onrender.com/${player.image}`}
         alt={player.name}
         className="w-full h-full object-contain" // Ensure the image covers the card
       />

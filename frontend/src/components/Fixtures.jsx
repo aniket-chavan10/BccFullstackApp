@@ -7,7 +7,7 @@ const Fixtures = () => {
   const [error, setError] = useState(null);
 
   // Base URL for images stored in uploads folder
-  const BASE_URL = "https://bccfullstackapp-1.onrender.com"; // Change this to your server's URL
+  const BASE_URL = "https://bcc-82hu.onrender.com"; // Change this to your server's URL
 
   useEffect(() => {
     const getFixtures = async () => {
