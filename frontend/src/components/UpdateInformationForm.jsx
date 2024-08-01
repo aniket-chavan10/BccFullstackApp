@@ -41,13 +41,21 @@ const UpdateInformationForm = () => {
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files.length) {
-      formData.append(name, files[0]);
+      setFormData((prevFormData) => {
+        const updatedFormData = new FormData(prevFormData);
+        updatedFormData.append(name, files[0]);
+        return updatedFormData;
+      });
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    formData.set(name, value);
+    setFormData((prevFormData) => {
+      const updatedFormData = new FormData(prevFormData);
+      updatedFormData.set(name, value);
+      return updatedFormData;
+    });
   };
 
   const handleSocialLinkChange = (e) => {
@@ -58,14 +66,18 @@ const UpdateInformationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      formData.set("socialLinks", JSON.stringify(socialLinks)); // Convert socialLinks object to JSON
+      const updatedFormData = new FormData();
+      for (const [key, value] of formData.entries()) {
+        updatedFormData.append(key, value);
+      }
+      updatedFormData.set("socialLinks", JSON.stringify(socialLinks)); // Convert socialLinks object to JSON
 
       let result;
       if (latestData) {
-        result = await updateInfo(latestData._id, formData);
+        result = await updateInfo(latestData._id, updatedFormData);
         setSuccessMessage("Cricket club updated successfully");
       } else {
-        result = await saveInfo(formData);
+        result = await saveInfo(updatedFormData);
         setSuccessMessage("Cricket club saved successfully");
       }
       setLatestData(result.club);
