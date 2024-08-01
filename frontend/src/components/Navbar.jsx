@@ -39,9 +39,9 @@ const Navbar = () => {
     fetchData();
   }, []);
 
-  if (!clubInfo) {
-    return <div>Loading...</div>;
-  }
+  // if (!clubInfo) {
+  //   return <div>Loading...</div>;
+  // }
 
   const handleMenuClick = () => {
     setIsOpen(!isOpen);
