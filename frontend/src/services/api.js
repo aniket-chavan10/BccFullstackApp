@@ -316,6 +316,7 @@ export const fetchLatestInfo = async () => {
   }
 };
 
+
 export const updateInfo = async (id, formData) => {
   try {
     const response = await fetch(`${BASE_URL}/info/${id}`, {
@@ -335,6 +336,7 @@ export const updateInfo = async (id, formData) => {
   }
 };
 
+
 export const saveInfo = async (formData) => {
   try {
     const response = await fetch(`${BASE_URL}/info`, {
@@ -353,6 +355,7 @@ export const saveInfo = async (formData) => {
     throw error;
   }
 };
+
 
 
 

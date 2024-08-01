@@ -1,8 +1,3 @@
-// models/CricketClub.js
-
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-
 const CricketClubSchema = new Schema({
   clubName: {
     type: String,
@@ -37,18 +32,9 @@ const CricketClubSchema = new Schema({
     required: false,
   },
   socialLinks: {
-    facebook: {
-      type: String,
-      required: false,
-    },
-    twitter: {
-      type: String,
-      required: false,
-    },
-    instagram: {
-      type: String,
-      required: false,
-    },
+    type: Map,
+    of: String,
+    required: false,
   },
   createdAt: {
     type: Date,

@@ -67,6 +67,7 @@ router.put('/:id', upload.fields([
 });
 
 // Route to create a new cricket club entry
+// Route to create a new cricket club entry
 router.post('/', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
@@ -77,6 +78,9 @@ router.post('/', upload.fields([
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
   try {
+    // Parse the socialLinks field if it is a JSON string
+    const parsedSocialLinks = socialLinks ? JSON.parse(socialLinks) : {};
+
     const newClub = new Info({
       clubName,
       associationName,
@@ -86,7 +90,8 @@ router.post('/', upload.fields([
       contactNumber,
       teamImg,
       logo,
-      socialLinks: JSON.parse(socialLinks || '{}')  // Convert to object if it's a JSON string
+      instaUrl,
+      socialLinks: parsedSocialLinks  // Use the parsed object
     });
 
     await newClub.save();
@@ -95,5 +100,6 @@ router.post('/', upload.fields([
     res.status(400).json({ message: 'Error creating cricket club', error: error.message });
   }
 });
+
 
 module.exports = router;
