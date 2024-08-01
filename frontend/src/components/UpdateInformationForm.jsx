@@ -70,8 +70,9 @@ const UpdateInformationForm = () => {
       for (const [key, value] of formData.entries()) {
         updatedFormData.append(key, value);
       }
+      console.log("Social Links before sending:", socialLinks);
       updatedFormData.set("socialLinks", JSON.stringify(socialLinks)); // Convert socialLinks object to JSON
-
+  
       let result;
       if (latestData) {
         result = await updateInfo(latestData._id, updatedFormData);
@@ -85,6 +86,7 @@ const UpdateInformationForm = () => {
       setError(error.message);
     }
   };
+  
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);

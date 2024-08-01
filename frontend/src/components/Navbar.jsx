@@ -56,7 +56,7 @@ const Navbar = () => {
   };
 
   // Extract social links from clubInfo
-  const socialLinks = clubInfo.socialLinks ? JSON.parse(clubInfo.socialLinks) : {};
+  const socialLinks = clubInfo.socialLinks || {};
 
   // Log the logo URL to debug
   const logoUrl = clubInfo.logo ? `https://bcc-82hu.onrender.com${clubInfo.logo}` : "";
