@@ -50,5 +50,5 @@ app.use("/api/login", loginRoutes);
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on port ${PORT}`);
 });
