@@ -46,9 +46,10 @@ router.put('/:id', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
+  console.log('Request Files:', req.files);
   const { clubName, associationName, description, tagline, email, contactNumber, instaUrl, socialLinks } = req.body;
-  const teamImg = req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
-  const logo = req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
+  const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
+  const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
   try {
     const updatedClub = await Info.findByIdAndUpdate(
@@ -70,9 +71,10 @@ router.post('/', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
+  console.log('Request Files:', req.files);
   const { clubName, associationName, description, tagline, email, contactNumber, instaUrl, socialLinks } = req.body;
-  const teamImg = req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
-  const logo = req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
+  const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
+  const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
   try {
     const newClub = new Info({
