@@ -1,6 +1,6 @@
 // src/services/api.js
 
-const BASE_URL = 'https://bcc-82hu.onrender.com/api'; // Replace with your backend base URL
+const BASE_URL = process.env.BASE_URL || 'https://bcc-82hu.onrender.com'; // Replace with your backend base URL
 
 export async function fetchCarouselItems() {
   try {
