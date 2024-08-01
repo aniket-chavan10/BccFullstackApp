@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaBars, FaFacebookF, FaInstagram, FaYoutube, FaSearch, FaShoppingCart, FaWhatsapp } from "react-icons/fa";
-import { fetchNewsData } from "../services/api";
+import { fetchLatestInfo, fetchNewsData } from "../services/api";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [clubInfo, setClubInfo] = useState(null);
   const [newsTitles, setNewsTitles] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const clubResponse = await fetchLatestInfo();
+        console.log("Fetched Club Response:", clubResponse);
+        if (clubResponse) {
+          setClubInfo(clubResponse);
+        } else {
+          console.error("No data found in the fetched response");
+        }
+    
         const newsData = await fetchNewsData();
         console.log("Fetched News Data:", newsData);
         if (Array.isArray(newsData)) {
@@ -30,6 +39,10 @@ const Navbar = () => {
     fetchData();
   }, []);
 
+  if (!clubInfo) {
+    return <div className="bg-red-500">Loading...</div>;
+  }
+
   const handleMenuClick = () => {
     setIsOpen(!isOpen);
   };
@@ -42,13 +55,28 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  // Extract social links from clubInfo
+  const socialLinks = clubInfo.socialLinks ? JSON.parse(clubInfo.socialLinks) : {};
+
+  // Log the logo URL to debug
+  const logoUrl = clubInfo.logo ? `https://bcc-82hu.onrender.com${clubInfo.logo}` : "";
+  console.log("Logo URL:", logoUrl);
+
   return (
     <nav className="fixed top-0 w-full z-10 bg-gradient-to-r from-orange-700 to-orange-600 text-white">
       <div className="flex items-center">
         {/* Logo */}
         <div className="flex-shrink-0 w-28 h-full flex items-center md:border-r px-3">
-          {/* Placeholder for logo */}
-          <div className="h-full w-20 bg-gray-900"></div>
+          {clubInfo.logo ? (
+            <img
+              src={logoUrl}
+              alt="Logo"
+              className="h-auto w-auto object-cover p-1 -mb-6"
+              onError={(e) => e.target.src = 'path/to/fallback-image.png'} // Fallback image
+            />
+          ) : (
+            <div className="h-full w-20 bg-gray-900"></div>
+          )}
         </div>
 
         {/* Main Content */}
@@ -72,7 +100,22 @@ const Navbar = () => {
               </div>
             </div>
             <div className="social-icons flex space-x-4">
-              {/* Social links can be added here if needed */}
+              {socialLinks.facebook && (
+                <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="cursor-pointer text-xl">
+                  <FaFacebookF />
+                </a>
+              )}
+              {socialLinks.instagram && (
+                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="cursor-pointer text-xl">
+                  <FaInstagram />
+                </a>
+              )}
+              {socialLinks.youtube && (
+                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="cursor-pointer text-xl">
+                  <FaYoutube />
+                </a>
+              )}
+              {/* Add any additional social icons here */}
               <button className="login-btn font-semibold" onClick={handleLoginClick}>Login</button>
             </div>
             {/* Horizontal Line */}
