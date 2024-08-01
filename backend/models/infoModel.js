@@ -1,3 +1,8 @@
+// models/CricketClub.js
+
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
 const CricketClubSchema = new Schema({
   clubName: {
     type: String,
