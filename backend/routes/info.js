@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const Info = require('../models/infoModel'); // Ensure this is the correct model import
+const Info = require('../models/infoModel');
 const multer = require('multer');
 const path = require('path');
 
 // Configure Multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads')); // Ensure uploads directory is correct
+    cb(null, path.join(__dirname, '../uploads'));
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -28,7 +28,6 @@ router.get('/', async (req, res) => {
     if (!latestClub) {
       return res.status(404).json({ message: 'No cricket club found' });
     }
-    // Normalize paths
     if (latestClub.teamImg) latestClub.teamImg = normalizePath(latestClub.teamImg);
     if (latestClub.logo) latestClub.logo = normalizePath(latestClub.logo);
     res.json(latestClub);
@@ -43,9 +42,6 @@ router.put('/:id', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
-  console.log('Request Body:', req.body);
-  console.log('Request Files:', req.files);
-
   const { clubName, associationName, description, tagline, email, contactNumber, socialLinks } = req.body;
   const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
@@ -71,13 +67,11 @@ router.post('/', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
-  console.log('Request Files:', req.files);
   const { clubName, associationName, description, tagline, email, contactNumber, socialLinks } = req.body;
   const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
   try {
-    // Parse the socialLinks field if it is a JSON string
     const parsedSocialLinks = socialLinks ? JSON.parse(socialLinks) : {};
 
     const newClub = new Info({
@@ -89,7 +83,7 @@ router.post('/', upload.fields([
       contactNumber,
       teamImg,
       logo,
-      socialLinks: parsedSocialLinks  // Use the parsed object
+      socialLinks: parsedSocialLinks
     });
 
     await newClub.save();
