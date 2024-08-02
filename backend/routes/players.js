@@ -1,26 +1,11 @@
 const express = require('express');
 const playersModel = require('../models/players');
 const router = express.Router();
-const multer = require("multer");
-const path = require('path');
-
-// Multer configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Destination directory for storing uploaded files
-  },
-  filename: (req, file, cb) => {
-    // Generate unique filename using current timestamp + original extension
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({ storage });
+const upload = require('../s3-config'); 
 
 // POST endpoint for adding a new player
 router.post("/", upload.single("image"), async (req, res) => {
   try {
-    // Create a new instance of playersModel with data from request
     const newPlayer = new playersModel({
       name: req.body.name,
       jerseyNo: req.body.jerseyNo,
@@ -28,20 +13,18 @@ router.post("/", upload.single("image"), async (req, res) => {
       runs: req.body.runs,
       wickets: req.body.wickets,
       age: req.body.age,
-      image: req.file ? req.file.path : "", // Store the file path if uploaded
+      image: req.file ? req.file.location : "", // Store the S3 URL if uploaded
       role: req.body.role,
       subrole: req.body.subrole,
       bestScore: req.body.bestScore,
       instaUrl: req.body.instaUrl,
     });
 
-    // Perform validation using Mongoose schema validation
     const validationErrors = newPlayer.validateSync();
     if (validationErrors) {
       return res.status(400).json({ message: "Validation error", errors: validationErrors });
     }
 
-    // Save the new player data to the database
     await newPlayer.save();
     res.status(201).json({ message: "Player added successfully" });
   } catch (error) {
@@ -70,14 +53,13 @@ router.put("/:id", upload.single("image"), async (req, res) => {
       runs: req.body.runs,
       wickets: req.body.wickets,
       age: req.body.age,
-      image: req.file ? req.file.path : req.body.image, // Handle file upload
+      image: req.file ? req.file.location : req.body.image, // Handle file upload
       role: req.body.role,
       subrole: req.body.subrole,
       bestScore: req.body.bestScore,
       instaUrl: req.body.instaUrl,
     };
 
-    // Update player data in the database
     const updatedPlayer = await playersModel.findByIdAndUpdate(playerId, updatedData, { new: true });
 
     if (!updatedPlayer) {
@@ -90,7 +72,5 @@ router.put("/:id", upload.single("image"), async (req, res) => {
     res.status(400).json({ message: "Failed to update player", error });
   }
 });
-
-
 
 module.exports = router;
