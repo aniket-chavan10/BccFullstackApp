@@ -37,6 +37,7 @@ router.get('/', async (req, res) => {
     latestClub.logo = normalizePath(latestClub.logo);
     res.json(latestClub);
   } catch (error) {
+    console.error('Error fetching cricket club information:', error);
     res.status(500).json({ message: 'Error fetching cricket club information', error: error.message });
   }
 });
@@ -62,11 +63,11 @@ router.put('/:id', upload.fields([
     }
     res.json({ message: 'Cricket club updated successfully', club: updatedClub });
   } catch (error) {
+    console.error('Error updating cricket club information:', error);
     res.status(400).json({ message: 'Error updating cricket club information', error: error.message });
   }
 });
 
-// Route to create a new cricket club entry
 // Route to create a new cricket club entry
 router.post('/', upload.fields([
   { name: 'teamImg', maxCount: 1 },
@@ -97,9 +98,13 @@ router.post('/', upload.fields([
     await newClub.save();
     res.json({ message: 'Cricket club created successfully', club: newClub });
   } catch (error) {
+    console.error('Error creating cricket club:', error);
     res.status(400).json({ message: 'Error creating cricket club', error: error.message });
   }
 });
 
-
 module.exports = router;
+
+// Ensure proper middleware usage
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));

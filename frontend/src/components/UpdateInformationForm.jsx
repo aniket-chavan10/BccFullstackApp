@@ -64,6 +64,9 @@ const UpdateInformationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null); // Clear previous error messages
+    setSuccessMessage(""); // Clear previous success messages
+
     try {
       const updatedFormData = new FormData(e.target);
       for (const [key, value] of Object.entries(fileData)) {
@@ -82,10 +85,10 @@ const UpdateInformationForm = () => {
       }
       setLatestData(result.club);
     } catch (error) {
-      setError(error.message);
+      console.error("Error updating cricket club:", error);
+      setError(`Error updating cricket club: ${error.message}`);
     }
   };
-  
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
@@ -216,18 +219,31 @@ const UpdateInformationForm = () => {
               placeholder="Contact Number"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
-            <input
-              type="file"
-              name="teamImg"
-              onChange={handleFileChange}
-              className="block w-full p-2 border border-gray-300 rounded-lg"
-            />
-            <input
-              type="file"
-              name="logo"
-              onChange={handleFileChange}
-              className="block w-full p-2 border border-gray-300 rounded-lg"
-            />
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Team Image:
+              </label>
+              <input
+                type="file"
+                name="teamImg"
+                onChange={handleFileChange}
+                className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 font-medium text-gray-700">
+                Team Logo Image:
+              </label>
+              <input
+                type="file"
+                name="logo"
+                onChange={handleFileChange}
+                className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+              />
+            </div>
+          </div>
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold mb-2">Social Links:</h3>
             <input
               type="text"
               name="facebook"
