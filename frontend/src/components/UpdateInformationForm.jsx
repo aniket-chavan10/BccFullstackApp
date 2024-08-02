@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { saveInfo, fetchLatestInfo, updateInfo } from "../services/api";
 
 const UpdateInformationForm = () => {
-  const [formData, setFormData] = useState(new FormData());
+  const [formData, setFormData] = useState({});
+  const [fileData, setFileData] = useState({});
   const [error, setError] = useState(null);
   const [latestData, setLatestData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,21 +42,19 @@ const UpdateInformationForm = () => {
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files.length) {
-      setFormData((prevFormData) => {
-        const updatedFormData = new FormData(prevFormData);
-        updatedFormData.append(name, files[0]);
-        return updatedFormData;
-      });
+      setFileData((prevFileData) => ({
+        ...prevFileData,
+        [name]: files[0]
+      }));
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => {
-      const updatedFormData = new FormData(prevFormData);
-      updatedFormData.set(name, value);
-      return updatedFormData;
-    });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
   };
 
   const handleSocialLinkChange = (e) => {
@@ -67,7 +66,10 @@ const UpdateInformationForm = () => {
     e.preventDefault();
     try {
       const updatedFormData = new FormData();
-      for (const [key, value] of formData.entries()) {
+      for (const [key, value] of Object.entries(formData)) {
+        updatedFormData.append(key, value);
+      }
+      for (const [key, value] of Object.entries(fileData)) {
         updatedFormData.append(key, value);
       }
       console.log("Social Links before sending:", socialLinks);
@@ -229,53 +231,56 @@ const UpdateInformationForm = () => {
               onChange={handleFileChange}
               className="block w-full p-2 border border-gray-300 rounded-lg"
             />
-          </div>
-
-          <h3 className="text-xl font-semibold mb-2 mt-6">Social Links:</h3>
-          <div className="grid grid-cols-1 gap-6">
             <input
               type="text"
               name="facebook"
-              value={socialLinks.facebook || ""}
+              value={socialLinks.facebook}
               onChange={handleSocialLinkChange}
-              placeholder="Facebook URL"
+              placeholder="Facebook Link"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
               type="text"
               name="twitter"
-              value={socialLinks.twitter || ""}
+              value={socialLinks.twitter}
               onChange={handleSocialLinkChange}
-              placeholder="Twitter URL"
+              placeholder="Twitter Link"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
               type="text"
               name="instagram"
-              value={socialLinks.instagram || ""}
+              value={socialLinks.instagram}
               onChange={handleSocialLinkChange}
-              placeholder="Instagram URL"
+              placeholder="Instagram Link"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
               type="text"
               name="youtube"
-              value={socialLinks.youtube || ""}
+              value={socialLinks.youtube}
               onChange={handleSocialLinkChange}
-              placeholder="YouTube URL"
+              placeholder="YouTube Link"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
           </div>
-
-          <button
-            type="submit"
-            className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
-          >
-            Save Changes
-          </button>
-
           {error && <p className="text-red-500 mt-2">{error}</p>}
           {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
+          <div className="mt-6 flex justify-end">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              onClick={toggleEdit}
+              className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition"
+            >
+              Cancel
+            </button>
+          </div>
         </form>
       )}
     </div>
