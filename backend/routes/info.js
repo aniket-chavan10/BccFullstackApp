@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Info = require('../models/cricketCubModel');
+const Info = require('../models/cricketCubModel'); // Ensure this path is correct
 const multer = require('multer');
 const path = require('path');
 
@@ -47,9 +47,24 @@ router.put('/:id', upload.fields([
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
   try {
+    const parsedSocialLinks = socialLinks ? JSON.parse(socialLinks) : {};
     const updatedClub = await Info.findByIdAndUpdate(
       req.params.id,
-      { clubName, associationName, description, tagline, logo, teamImg, email, contactNumber, socialLinks: JSON.parse(socialLinks) },
+      { 
+        clubName, 
+        associationName, 
+        description, 
+        tagline, 
+        logo, 
+        teamImg, 
+        email, 
+        contactNumber, 
+        socialLinks: {
+          facebook: parsedSocialLinks.facebook || '',
+          twitter: parsedSocialLinks.twitter || '',
+          instagram: parsedSocialLinks.instagram || ''
+        } 
+      },
       { new: true }
     );
     if (!updatedClub) {
@@ -83,7 +98,11 @@ router.post('/', upload.fields([
       contactNumber,
       teamImg,
       logo,
-      socialLinks: parsedSocialLinks
+      socialLinks: {
+        facebook: parsedSocialLinks.facebook || '',
+        twitter: parsedSocialLinks.twitter || '',
+        instagram: parsedSocialLinks.instagram || ''
+      }
     });
 
     await newClub.save();
