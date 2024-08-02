@@ -303,6 +303,7 @@ export const updateFixture = async (id, fixtureData) => {
 
 
 // for info of crickte club
+
 export const fetchLatestInfo = async () => {
   try {
     const response = await fetch(`${BASE_URL}/info`);
@@ -316,10 +317,9 @@ export const fetchLatestInfo = async () => {
   }
 };
 
-
 export const updateInfo = async (id, formData) => {
   try {
-    const response = await fetch(`/api/info/${id}`, {
+    const response = await fetch(`${BASE_URL}/info/${id}`, {
       method: 'PUT',
       body: formData
     });
@@ -333,8 +333,6 @@ export const updateInfo = async (id, formData) => {
     throw new Error(`Failed to update cricket club: ${error.message}`);
   }
 };
-
-
 
 export const saveInfo = async (formData) => {
   try {
