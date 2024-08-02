@@ -22,11 +22,18 @@ const UpdateInformationForm = () => {
         const data = await fetchLatestInfo();
         console.log("Fetched Data:", data);
         setLatestData(data);
-        setSocialLinks(data.socialLinks ? JSON.parse(data.socialLinks) : {
-          facebook: "",
-          twitter: "",
-          instagram: "",
-          youtube: "",
+        setSocialLinks(
+          data.socialLinks
+            ? JSON.parse(data.socialLinks)
+            : { facebook: "", twitter: "", instagram: "", youtube: "" }
+        );
+        setFormData({
+          clubName: data.clubName,
+          associationName: data.associationName,
+          description: data.description,
+          tagline: data.tagline,
+          email: data.email,
+          contactNumber: data.contactNumber,
         });
       } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -44,7 +51,7 @@ const UpdateInformationForm = () => {
     if (files.length) {
       setFileData((prevFileData) => ({
         ...prevFileData,
-        [name]: files[0]
+        [name]: files[0],
       }));
     }
   };
@@ -53,7 +60,7 @@ const UpdateInformationForm = () => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -64,17 +71,17 @@ const UpdateInformationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous error messages
-    setSuccessMessage(""); // Clear previous success messages
-  
+    setError(null);
+    setSuccessMessage("");
+
     try {
       const updatedFormData = new FormData(e.target);
       for (const [key, value] of Object.entries(fileData)) {
         updatedFormData.append(key, value);
       }
       console.log("Social Links before sending:", socialLinks);
-      updatedFormData.set("socialLinks", JSON.stringify(socialLinks)); // Convert socialLinks object to JSON
-  
+      updatedFormData.set("socialLinks", JSON.stringify(socialLinks));
+
       let result;
       if (latestData) {
         result = await updateInfo(latestData._id, updatedFormData);
@@ -84,12 +91,13 @@ const UpdateInformationForm = () => {
         setSuccessMessage("Cricket club saved successfully");
       }
       setLatestData(result.club);
+      setFileData({});
+      setIsEditing(false);
     } catch (error) {
       console.error("Error updating cricket club:", error);
       setError(`Error updating cricket club: ${error.message}`);
     }
   };
-  
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);
@@ -176,7 +184,7 @@ const UpdateInformationForm = () => {
             <input
               type="text"
               name="clubName"
-              defaultValue={latestData?.clubName || ""}
+              value={formData.clubName || ""}
               onChange={handleInputChange}
               placeholder="Club Name"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
@@ -184,14 +192,14 @@ const UpdateInformationForm = () => {
             <input
               type="text"
               name="associationName"
-              defaultValue={latestData?.associationName || ""}
+              value={formData.associationName || ""}
               onChange={handleInputChange}
               placeholder="Association Name"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <textarea
               name="description"
-              defaultValue={latestData?.description || ""}
+              value={formData.description || ""}
               onChange={handleInputChange}
               placeholder="Description"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
@@ -199,7 +207,7 @@ const UpdateInformationForm = () => {
             <input
               type="text"
               name="tagline"
-              defaultValue={latestData?.tagline || ""}
+              value={formData.tagline || ""}
               onChange={handleInputChange}
               placeholder="Tagline"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
@@ -207,7 +215,7 @@ const UpdateInformationForm = () => {
             <input
               type="email"
               name="email"
-              defaultValue={latestData?.email || ""}
+              value={formData.email || ""}
               onChange={handleInputChange}
               placeholder="Email"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
@@ -215,7 +223,7 @@ const UpdateInformationForm = () => {
             <input
               type="text"
               name="contactNumber"
-              defaultValue={latestData?.contactNumber || ""}
+              value={formData.contactNumber || ""}
               onChange={handleInputChange}
               placeholder="Contact Number"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
@@ -243,50 +251,64 @@ const UpdateInformationForm = () => {
               />
             </div>
           </div>
-          <div className="mt-6">
-            <h3 className="text-xl font-semibold mb-2">Social Links:</h3>
+
+          <h3 className="text-xl font-semibold mt-6 mb-2">Social Links</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <input
-              type="text"
+              type="url"
               name="facebook"
               value={socialLinks.facebook}
               onChange={handleSocialLinkChange}
-              placeholder="Facebook Link"
+              placeholder="Facebook URL"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
-              type="text"
+              type="url"
               name="twitter"
               value={socialLinks.twitter}
               onChange={handleSocialLinkChange}
-              placeholder="Twitter Link"
+              placeholder="Twitter URL"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
-              type="text"
+              type="url"
               name="instagram"
               value={socialLinks.instagram}
               onChange={handleSocialLinkChange}
-              placeholder="Instagram Link"
+              placeholder="Instagram URL"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
             <input
-              type="text"
+              type="url"
               name="youtube"
               value={socialLinks.youtube}
               onChange={handleSocialLinkChange}
-              placeholder="YouTube Link"
+              placeholder="YouTube URL"
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
           </div>
-          {error && <p className="text-red-500 mt-4">{error}</p>}
-          {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}
-          <button
-            type="submit"
-            className="mt-6 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
-          >
-            {latestData ? "Update Information" : "Save Information"}
-          </button>
+
+          <div className="flex justify-end mt-6">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
+            >
+              Save
+            </button>
+          </div>
         </form>
+      )}
+
+      {error && (
+        <p className="mt-4 text-red-600 font-semibold">
+          Error: {error}
+        </p>
+      )}
+
+      {successMessage && (
+        <p className="mt-4 text-green-600 font-semibold">
+          {successMessage}
+        </p>
       )}
     </div>
   );

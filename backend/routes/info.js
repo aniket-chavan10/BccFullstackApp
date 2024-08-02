@@ -16,10 +16,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Serve static files
-const app = express();
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
-
 // Utility function to normalize paths
 const normalizePath = (filePath) => {
   return filePath.replace(/\\/g, '/').replace(/^.*(uploads)/, '/$1');
@@ -43,14 +39,13 @@ router.get('/', async (req, res) => {
 });
 
 // Route to update the single cricket club entry
-// Route to update the single cricket club entry
 router.put('/:id', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
   console.log('Request Body:', req.body);
   console.log('Request Files:', req.files);
-  
+
   const { clubName, associationName, description, tagline, email, contactNumber, socialLinks } = req.body;
   const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
@@ -107,7 +102,3 @@ router.post('/', upload.fields([
 });
 
 module.exports = router;
-
-// Ensure proper middleware usage
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
