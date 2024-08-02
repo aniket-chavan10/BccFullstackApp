@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Info = require('../models/infoModel');
+const Info = require('../models/cricketCubModel');
 const multer = require('multer');
 const path = require('path');
 
