@@ -29,8 +29,8 @@ router.get('/', async (req, res) => {
       return res.status(404).json({ message: 'No cricket club found' });
     }
     // Normalize paths
-    latestClub.teamImg = normalizePath(latestClub.teamImg);
-    latestClub.logo = normalizePath(latestClub.logo);
+    if (latestClub.teamImg) latestClub.teamImg = normalizePath(latestClub.teamImg);
+    if (latestClub.logo) latestClub.logo = normalizePath(latestClub.logo);
     res.json(latestClub);
   } catch (error) {
     console.error('Error fetching cricket club information:', error);
@@ -53,7 +53,7 @@ router.put('/:id', upload.fields([
   try {
     const updatedClub = await Info.findByIdAndUpdate(
       req.params.id,
-      { clubName, associationName, description, tagline, logo, teamImg, email, contactNumber, socialLinks },
+      { clubName, associationName, description, tagline, logo, teamImg, email, contactNumber, socialLinks: JSON.parse(socialLinks) },
       { new: true }
     );
     if (!updatedClub) {
@@ -72,7 +72,7 @@ router.post('/', upload.fields([
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
   console.log('Request Files:', req.files);
-  const { clubName, associationName, description, tagline, email, contactNumber, instaUrl, socialLinks } = req.body;
+  const { clubName, associationName, description, tagline, email, contactNumber, socialLinks } = req.body;
   const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
@@ -89,7 +89,6 @@ router.post('/', upload.fields([
       contactNumber,
       teamImg,
       logo,
-      instaUrl,
       socialLinks: parsedSocialLinks  // Use the parsed object
     });
 
