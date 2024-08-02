@@ -71,6 +71,7 @@ function PlayerOfMonth() {
                   alt={bestBatsman.name}
                   className="object-contain w-full h-full absolute inset-0"
                 />
+                
               </div>
               <div className="flex flex-col mt-4 md:mt-auto p-4">
                 <h1 className="text-orange-500 text-3xl md:text-7xl font-bold font-montserrat">

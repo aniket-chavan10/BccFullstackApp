@@ -25,7 +25,6 @@ const PlayersList = () => {
 
   const handleSave = async (updatedPlayer) => {
     try {
-      console.log("Updating player with ID:", selectedPlayer._id); // Debug
       await updatePlayerData(selectedPlayer._id, updatedPlayer);
       setPlayersData((prevData) =>
         prevData.map((player) =>
@@ -53,23 +52,24 @@ const PlayersList = () => {
         {playersData.map((player) => (
           <div
             key={player._id}
-            className="relative flex bg-white rounded-lg shadow-md w-72 h-60"
+            className="relative flex bg-white rounded-lg shadow-md overflow-hidden"
           >
             <button
               onClick={() => handleEditClick(player)}
-              className="absolute top-2 right-2 bg-orange-600 text-white px-3 rounded hover:bg-orange-700 transition duration-300"
+              className="absolute top-2 right-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700 transition duration-300"
             >
               Edit
             </button>
-            <div className="w-4/5">
+            <div className="w-1/3 h-full">
               <img
                 src={`https://bcc-82hu.onrender.com/${player.image}`}
                 alt={player.name}
-                className="w-fit h-full object-cover rounded-l-lg"
+                className="w-full h-full object-cover"
+                onError={(e) => e.target.src = 'path/to/placeholder-image.jpg'} // Fallback image
               />
             </div>
-            <div className="mt-5 py-5 w-2/3">
-              <h3 className="text-lg font-bold mb-2 text-wrap leading-tight underline underline-offset-4">
+            <div className="w-2/3 p-4">
+              <h3 className="text-lg font-bold mb-2 text-orange-600 truncate">
                 {player.name}
               </h3>
               <p className="text-sm mb-1 font-bold">Role: <span className="font-normal">{player.role}</span> </p>

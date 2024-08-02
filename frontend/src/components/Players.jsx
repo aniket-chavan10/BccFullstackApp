@@ -5,7 +5,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 function Players() {
   const [playersData, setPlayersData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 768);
 
   const playersPerPage = isSmallScreen ? 1 : 4;
 
@@ -27,20 +27,18 @@ function Players() {
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize();
-
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const nextPage = () => {
     if (currentPage + playersPerPage < playersData.length) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      setCurrentPage(prevPage => prevPage + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage((prevPage) => prevPage - 1);
+      setCurrentPage(prevPage => prevPage - 1);
     }
   };
 
@@ -62,7 +60,7 @@ function Players() {
             <div className="bg-gradient-to-b from-slate-50 to-slate-200 mb-5 flex flex-col items-center justify-center">
               <div className="relative h-72 w-full md:w-64 overflow-hidden flex justify-center items-center">
                 <img
-                  src={`https://bcc-82hu.onrender.com/${player.image}`}
+                  src={player.image ? `https://bcc-82hu.onrender.com/${player.image}` : '/default-image.jpg'}
                   alt={player.name}
                   className="object-contain max-h-full max-w-full"
                 />

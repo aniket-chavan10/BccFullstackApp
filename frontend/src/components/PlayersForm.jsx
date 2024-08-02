@@ -17,6 +17,7 @@ const PlayersForm = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+  const [imagePreview, setImagePreview] = useState(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -26,7 +27,9 @@ const PlayersForm = () => {
     const { name, value, files } = e.target;
 
     if (name === "image") {
-      setFormData({ ...formData, image: files[0] });
+      const file = files[0];
+      setFormData({ ...formData, image: file });
+      setImagePreview(URL.createObjectURL(file));
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -48,6 +51,7 @@ const PlayersForm = () => {
       const response = await addPlayerData(data);
       console.log("Player added successfully:", response);
       setFormData(initialFormData);
+      setImagePreview(null);
       setSuccess("Player added successfully!");
       setError("");
     } catch (error) {
@@ -178,6 +182,15 @@ const PlayersForm = () => {
             accept="image/*"
             className="mt-1 block w-full border border-gray-300 rounded-md p-2 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 transition duration-150 focus:outline-none"
           />
+          {imagePreview && (
+            <div className="mt-4">
+              <img
+                src={imagePreview}
+                alt="Image preview"
+                className="w-full h-48 object-cover rounded-md border border-gray-300"
+              />
+            </div>
+          )}
         </div>
 
         {/* Role */}
