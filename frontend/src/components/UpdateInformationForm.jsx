@@ -65,10 +65,7 @@ const UpdateInformationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const updatedFormData = new FormData();
-      for (const [key, value] of Object.entries(formData)) {
-        updatedFormData.append(key, value);
-      }
+      const updatedFormData = new FormData(e.target);
       for (const [key, value] of Object.entries(fileData)) {
         updatedFormData.append(key, value);
       }
@@ -264,23 +261,14 @@ const UpdateInformationForm = () => {
               className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
             />
           </div>
-          {error && <p className="text-red-500 mt-2">{error}</p>}
-          {successMessage && <p className="text-green-500 mt-2">{successMessage}</p>}
-          <div className="mt-6 flex justify-end">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
-            >
-              Save Changes
-            </button>
-            <button
-              type="button"
-              onClick={toggleEdit}
-              className="ml-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 transition"
-            >
-              Cancel
-            </button>
-          </div>
+          {error && <p className="text-red-500 mt-4">{error}</p>}
+          {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}
+          <button
+            type="submit"
+            className="mt-6 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
+          >
+            {latestData ? "Update Information" : "Save Information"}
+          </button>
         </form>
       )}
     </div>
