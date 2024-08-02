@@ -22,11 +22,7 @@ const UpdateInformationForm = () => {
         const data = await fetchLatestInfo();
         console.log("Fetched Data:", data);
         setLatestData(data);
-        setSocialLinks(
-          data.socialLinks
-            ? JSON.parse(data.socialLinks)
-            : { facebook: "", twitter: "", instagram: "", youtube: "" }
-        );
+        setSocialLinks(data.socialLinks || { facebook: "", twitter: "", instagram: "", youtube: "" });
         setFormData({
           clubName: data.clubName,
           associationName: data.associationName,
@@ -75,11 +71,13 @@ const UpdateInformationForm = () => {
     setSuccessMessage("");
 
     try {
-      const updatedFormData = new FormData(e.target);
+      const updatedFormData = new FormData();
       for (const [key, value] of Object.entries(fileData)) {
         updatedFormData.append(key, value);
       }
-      console.log("Social Links before sending:", socialLinks);
+      for (const [key, value] of Object.entries(formData)) {
+        updatedFormData.append(key, value);
+      }
       updatedFormData.set("socialLinks", JSON.stringify(socialLinks));
 
       let result;
@@ -114,201 +112,210 @@ const UpdateInformationForm = () => {
   return (
     <div className="container mx-auto mt-12 p-8 bg-gradient-to-br from-orange-50 to-orange-200 rounded-lg shadow-md border border-orange-300 max-w-4xl">
       {latestData ? (
-        <div className="p-6 mb-6">
-          <h2 className="text-3xl font-semibold mb-4">{latestData.clubName}</h2>
-          <p className="text-lg mb-2">
+        <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4">Current Club Information</h2>
+          <div className="mb-4">
+            <strong>Club Name:</strong> {latestData.clubName}
+          </div>
+          <div className="mb-4">
             <strong>Association Name:</strong> {latestData.associationName}
-          </p>
-          <p className="text-lg mb-2">
+          </div>
+          <div className="mb-4">
             <strong>Description:</strong> {latestData.description}
-          </p>
-          <p className="text-lg mb-2">
+          </div>
+          <div className="mb-4">
             <strong>Tagline:</strong> {latestData.tagline}
-          </p>
-          <p className="text-lg mb-2">
+          </div>
+          <div className="mb-4">
             <strong>Email:</strong> {latestData.email}
-          </p>
-          <p className="text-lg mb-2">
+          </div>
+          <div className="mb-4">
             <strong>Contact Number:</strong> {latestData.contactNumber}
-          </p>
+          </div>
+          <div className="mb-4">
+            <strong>Social Links:</strong>
+            <ul>
+              <li>Facebook: {latestData.socialLinks?.facebook}</li>
+              <li>Twitter: {latestData.socialLinks?.twitter}</li>
+              <li>Instagram: {latestData.socialLinks?.instagram}</li>
+              <li>Youtube: {latestData.socialLinks?.youtube}</li>
+            </ul>
+          </div>
           {latestData.teamImg && (
-            <div className="w-full h-auto mb-4">
-              <p className="text-lg mb-2">
-                <strong>Team Image:</strong>
-              </p>
-              <img
-                src={getImageUrl(latestData.teamImg)}
-                alt="Team"
-                className="w-full h-auto object-cover rounded-lg"
-              />
+            <div className="mb-4">
+              <strong>Team Image:</strong> <img src={getImageUrl(latestData.teamImg)} alt="Team" className="w-32 h-32 object-cover rounded-md" />
             </div>
           )}
           {latestData.logo && (
-            <div className="w-1/4 h-auto mb-4">
-              <p className="text-lg mb-2">
-                <strong>Team Logo Image:</strong>
-              </p>
-              <img
-                src={getImageUrl(latestData.logo)}
-                alt="Logo"
-                className="w-full h-auto object-cover rounded-lg"
-              />
+            <div className="mb-4">
+              <strong>Logo:</strong> <img src={getImageUrl(latestData.logo)} alt="Logo" className="w-32 h-32 object-cover rounded-md" />
             </div>
           )}
-          <div className="mt-6">
-            <h3 className="text-xl font-semibold mb-2">Social Links:</h3>
-            <p><strong>Facebook:</strong> {socialLinks.facebook || "N/A"}</p>
-            <p><strong>Twitter:</strong> {socialLinks.twitter || "N/A"}</p>
-            <p><strong>Instagram:</strong> {socialLinks.instagram || "N/A"}</p>
-            <p><strong>YouTube:</strong> {socialLinks.youtube || "N/A"}</p>
-          </div>
-
-          <button
-            onClick={toggleEdit}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition"
-          >
+          <button onClick={toggleEdit} className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md shadow-md">
             Edit Information
           </button>
         </div>
       ) : (
-        <p className="text-center">No information available</p>
+        <div className="p-6 mb-6 bg-white rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-4">No Club Information Available</h2>
+        </div>
       )}
 
       {isEditing && (
-        <form
-          onSubmit={handleSubmit}
-          className="bg-gray-50 rounded-lg shadow-lg p-6 mt-6 border border-gray-200"
-        >
-          <h2 className="text-2xl font-semibold mb-4">Update Information</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input
-              type="text"
-              name="clubName"
-              value={formData.clubName || ""}
-              onChange={handleInputChange}
-              placeholder="Club Name"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="text"
-              name="associationName"
-              value={formData.associationName || ""}
-              onChange={handleInputChange}
-              placeholder="Association Name"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <textarea
-              name="description"
-              value={formData.description || ""}
-              onChange={handleInputChange}
-              placeholder="Description"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="text"
-              name="tagline"
-              value={formData.tagline || ""}
-              onChange={handleInputChange}
-              placeholder="Tagline"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="email"
-              name="email"
-              value={formData.email || ""}
-              onChange={handleInputChange}
-              placeholder="Email"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="text"
-              name="contactNumber"
-              value={formData.contactNumber || ""}
-              onChange={handleInputChange}
-              placeholder="Contact Number"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <div>
-              <label className="block mb-2 font-medium text-gray-700">
-                Team Image:
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-semibold mb-6">{latestData ? "Edit Club Information" : "Add Club Information"}</h2>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="clubName">
+                Club Name
+              </label>
+              <input
+                type="text"
+                name="clubName"
+                value={formData.clubName || ""}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="associationName">
+                Association Name
+              </label>
+              <input
+                type="text"
+                name="associationName"
+                value={formData.associationName || ""}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="description">
+                Description
+              </label>
+              <textarea
+                name="description"
+                value={formData.description || ""}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              ></textarea>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="tagline">
+                Tagline
+              </label>
+              <input
+                type="text"
+                name="tagline"
+                value={formData.tagline || ""}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email || ""}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="contactNumber">
+                Contact Number
+              </label>
+              <input
+                type="tel"
+                name="contactNumber"
+                value={formData.contactNumber || ""}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded-md"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2">Social Links</label>
+              <div className="mb-2">
+                <input
+                  type="url"
+                  name="facebook"
+                  value={socialLinks.facebook}
+                  onChange={handleSocialLinkChange}
+                  placeholder="Facebook"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-2">
+                <input
+                  type="url"
+                  name="twitter"
+                  value={socialLinks.twitter}
+                  onChange={handleSocialLinkChange}
+                  placeholder="Twitter"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-2">
+                <input
+                  type="url"
+                  name="instagram"
+                  value={socialLinks.instagram}
+                  onChange={handleSocialLinkChange}
+                  placeholder="Instagram"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mb-2">
+                <input
+                  type="url"
+                  name="youtube"
+                  value={socialLinks.youtube}
+                  onChange={handleSocialLinkChange}
+                  placeholder="YouTube"
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="teamImg">
+                Team Image
               </label>
               <input
                 type="file"
                 name="teamImg"
                 onChange={handleFileChange}
-                className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
-            <div>
-              <label className="block mb-2 font-medium text-gray-700">
-                Team Logo Image:
+            <div className="mb-4">
+              <label className="block text-gray-700 font-bold mb-2" htmlFor="logo">
+                Logo
               </label>
               <input
                 type="file"
                 name="logo"
                 onChange={handleFileChange}
-                className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
+                className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
-          </div>
-
-          <h3 className="text-xl font-semibold mt-6 mb-2">Social Links</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input
-              type="url"
-              name="facebook"
-              value={socialLinks.facebook}
-              onChange={handleSocialLinkChange}
-              placeholder="Facebook URL"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="url"
-              name="twitter"
-              value={socialLinks.twitter}
-              onChange={handleSocialLinkChange}
-              placeholder="Twitter URL"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="url"
-              name="instagram"
-              value={socialLinks.instagram}
-              onChange={handleSocialLinkChange}
-              placeholder="Instagram URL"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-            <input
-              type="url"
-              name="youtube"
-              value={socialLinks.youtube}
-              onChange={handleSocialLinkChange}
-              placeholder="YouTube URL"
-              className="block w-full p-3 border border-gray-300 rounded-lg shadow-sm"
-            />
-          </div>
-
-          <div className="flex justify-end mt-6">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 transition"
-            >
-              Save
-            </button>
-          </div>
-        </form>
-      )}
-
-      {error && (
-        <p className="mt-4 text-red-600 font-semibold">
-          Error: {error}
-        </p>
-      )}
-
-      {successMessage && (
-        <p className="mt-4 text-green-600 font-semibold">
-          {successMessage}
-        </p>
+            <div className="flex justify-end">
+              <button type="submit" className="px-6 py-2 bg-green-500 text-white rounded-md shadow-md">
+                {latestData ? "Update Information" : "Save Information"}
+              </button>
+            </div>
+          </form>
+        </div>
       )}
     </div>
   );

@@ -62,7 +62,8 @@ router.put('/:id', upload.fields([
         socialLinks: {
           facebook: parsedSocialLinks.facebook || '',
           twitter: parsedSocialLinks.twitter || '',
-          instagram: parsedSocialLinks.instagram || ''
+          instagram: parsedSocialLinks.instagram || '',
+          youtube: parsedSocialLinks.youtube || ''
         } 
       },
       { new: true }
@@ -101,7 +102,8 @@ router.post('/', upload.fields([
       socialLinks: {
         facebook: parsedSocialLinks.facebook || '',
         twitter: parsedSocialLinks.twitter || '',
-        instagram: parsedSocialLinks.instagram || ''
+        instagram: parsedSocialLinks.instagram || '',
+        youtube: parsedSocialLinks.youtube || ''
       }
     });
 
