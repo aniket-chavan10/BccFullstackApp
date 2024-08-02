@@ -319,22 +319,21 @@ export const fetchLatestInfo = async () => {
 
 export const updateInfo = async (id, formData) => {
   try {
-    const response = await fetch(`${BASE_URL}/info/${id}`, {
+    const response = await fetch(`/api/info/${id}`, {
       method: 'PUT',
-      body: formData,
+      body: formData
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to update cricket club: ${errorText}`);
+      throw new Error(`Failed to update cricket club: ${response.statusText}`);
     }
 
     return await response.json();
   } catch (error) {
-    console.error('Error updating cricket club:', error);
-    throw error;
+    throw new Error(`Failed to update cricket club: ${error.message}`);
   }
 };
+
 
 
 export const saveInfo = async (formData) => {

@@ -66,7 +66,7 @@ const UpdateInformationForm = () => {
     e.preventDefault();
     setError(null); // Clear previous error messages
     setSuccessMessage(""); // Clear previous success messages
-
+  
     try {
       const updatedFormData = new FormData(e.target);
       for (const [key, value] of Object.entries(fileData)) {
@@ -89,6 +89,7 @@ const UpdateInformationForm = () => {
       setError(`Error updating cricket club: ${error.message}`);
     }
   };
+  
 
   const toggleEdit = () => {
     setIsEditing(!isEditing);

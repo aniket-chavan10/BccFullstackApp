@@ -43,19 +43,22 @@ router.get('/', async (req, res) => {
 });
 
 // Route to update the single cricket club entry
+// Route to update the single cricket club entry
 router.put('/:id', upload.fields([
   { name: 'teamImg', maxCount: 1 },
   { name: 'logo', maxCount: 1 }
 ]), async (req, res) => {
+  console.log('Request Body:', req.body);
   console.log('Request Files:', req.files);
-  const { clubName, associationName, description, tagline, email, contactNumber, instaUrl, socialLinks } = req.body;
+  
+  const { clubName, associationName, description, tagline, email, contactNumber, socialLinks } = req.body;
   const teamImg = req.files && req.files['teamImg'] ? normalizePath(req.files['teamImg'][0].path) : '';
   const logo = req.files && req.files['logo'] ? normalizePath(req.files['logo'][0].path) : '';
 
   try {
     const updatedClub = await Info.findByIdAndUpdate(
       req.params.id,
-      { clubName, associationName, description, tagline, logo, teamImg, email, contactNumber, instaUrl, socialLinks },
+      { clubName, associationName, description, tagline, logo, teamImg, email, contactNumber, socialLinks },
       { new: true }
     );
     if (!updatedClub) {
@@ -64,7 +67,7 @@ router.put('/:id', upload.fields([
     res.json({ message: 'Cricket club updated successfully', club: updatedClub });
   } catch (error) {
     console.error('Error updating cricket club information:', error);
-    res.status(400).json({ message: 'Error updating cricket club information', error: error.message });
+    res.status(500).json({ message: 'Error updating cricket club information', error: error.message });
   }
 });
 
